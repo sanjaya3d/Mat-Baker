@@ -1,0 +1,25 @@
+schema_version = "1.0.0"
+
+id = "mat_baker"
+version = "1.0.0"
+name = "Mat-Baker"
+tagline = "Bake procedural materials into PBR texture packs"
+maintainer = "SANJAYA3D"
+type = "add-on"
+
+website = "https://github.com/SANJAYA3D/Mat-Baker"
+
+tags = ["Bake", "Material", "Pipeline"]
+
+blender_version_min = "4.2.0"
+
+license = [
+  "SPDX:GPL-3.0-or-later",
+]
+
+copyright = [
+  "2026 SANJAYA3D",
+]
+
+[permissions]
+files = "Save baked texture files to a folder you choose"
