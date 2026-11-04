@@ -35,7 +35,8 @@ Blender add-on / extension by **SANJAYA3D** · GPL-3.0-or-later · requires Blen
 - **Normal map convention** – OpenGL (+Y) or DirectX (−Y).
 - **PNG, TIFF or OpenEXR**, 8 / 16 / 32-bit, standard or Unreal-style file names, optional JSON manifest.
 - **Stays responsive between maps** – progress bar in the panel, **Esc** cancels (after the current map finishes).
-- **Batch export** – active material, all materials on selected objects, or every material in the file.
+- **Models with many materials** – bake all materials of an object into **one** texture set through its UV map.
+- **Batch export** – the active object, all selected objects, or everything in the file.
 - **Preview Material** – builds a ready-to-assign Blender material from the exported files so you can check the result.
 - **Your scene stays clean** – works on a copy of the material; all temporary data is removed and all settings are restored, even when you cancel.
 
@@ -68,6 +69,21 @@ pbr_export/
     ├── Rock_ORM.png          (packed: R = AO, G = Roughness, B = Metallic)
     └── Rock_pbr.json         (resolution, normal convention, file list, height info)
 ```
+
+## Models with many materials (one texture set)
+
+A model with several materials can be baked into **one** set of maps (one Base Color, one Normal, …) instead of one set per material:
+
+1. Select the model and choose **Bake target ▸ Whole Object (all materials in one set)**.
+2. Pick the **UV Map** to bake into. It must be **one layout shared by all materials, with nothing overlapping**.
+   If your UVs tile or overlap, unwrap the model into a new UV map first (for example *Smart UV Project* or *Lightmap Pack*), then select that map here.
+3. Check the panel: it lists the materials, shows how much of the UV square is covered, and warns when UVs overlap or leave the 0–1 square.
+4. Click **Export Texture Pack**. You get one set named after the object (`Prop_BaseColor.png`, `Prop_Normal.png`, …).
+
+How it works: every face is baked through **its own material** into the same image. A map that only some materials provide is filled with neutral defaults for the others (black emission, fully opaque, flat height, default grey colour), and empty material slots are baked as default grey.
+Use the result with the same UV map: assign the texture set (or **Preview Material**) to the model with that UV map active.
+
+Good to know: the overlap check is an estimate – it flags UV coverage above 100 % and UVs outside the square, but it cannot see overlaps in a layout that covers less than the whole square. **Export** can run for one object, all selected objects (one set each) or every mesh object in the file.
 
 ## Presets
 
@@ -104,7 +120,7 @@ Colour maps are saved as sRGB, data maps (normal, roughness, …) as untouched N
 
 ## Good to know
 
-- **Bake target.** *Flat Plane* (default) bakes onto a temporary plane (2 m by default) with 0–1 UVs, which is what you want for tileable texture packs. *Object's UVs* bakes onto your own mesh and UV map.
+- **Bake target.** *Flat Plane* (default) bakes each material onto a temporary plane (2 m by default) with 0–1 UVs – one set per material, which is what you want for tileable texture packs. *Whole Object* bakes all materials of an object into one set using the object's UV map (see above).
 - **Height-based maps need a height source.** Normal, Height, AO and Curvature come from a Displacement or Bump node with a connected *Height* input. Without one, those maps are skipped and the panel tells you why.
 - **Principled BSDF.** It has to be at the top level of the material's node tree, not inside a node group. If there are several, the first one connected to the output is used.
 - **Resolution and memory.** 4K works on most machines; 8K needs a lot of RAM, especially with 16/32-bit output.
@@ -115,9 +131,10 @@ Colour maps are saved as sRGB, data maps (normal, roughness, …) as untouched N
 
 While exporting, Mat-Baker:
 
-- makes a **copy of your material** and bakes that copy (the original is never modified),
+- makes a **copy of your material** (in *Whole Object* mode: a copy of each material of the object) and bakes the copies – the originals are never modified,
 - adds a temporary **plane object, mesh, images and a scene** (names start with `_MATBAKER_`) and removes them again,
 - switches the render engine to **Cycles** and adjusts the bake settings, then **restores them**,
+- in *Whole Object* mode, temporarily assigns those copies to the object's material slots and makes the chosen UV map active, then **puts both back**,
 - restores your selection and active object afterwards.
 
 It writes files **only** into the output folder you choose. **Preview Material** (on request) adds a material named `<Name>_PBR` that uses the exported files. It never touches the network, collects nothing and sends nothing.
@@ -129,10 +146,11 @@ The only permission it requests is *files* ("Save baked texture files to a folde
 |---|---|
 | "Save the .blend file first…" | The output folder starts with `//`. Save the .blend, or enter an absolute folder. |
 | "The Cycles add-on is disabled" | Enable Cycles in `Preferences ▸ Add-ons`; baking needs it. |
-| "…has no UV map" | Only in *Object's UVs* mode – unwrap the object or use *Flat Plane*. |
+| "…has no UV map" | Only in *Whole Object* mode – unwrap the object or use *Flat Plane*. |
+| "UVs overlap" / "UVs leave the 0-1 square" | *Whole Object* mode needs one non-overlapping layout inside the UV square. Unwrap into a new UV map (e.g. *Smart UV Project*) and select it under **UV Map**. |
 | A map shows ✖ | Read the short hint under the checklist, e.g. "Normal: add a Bump/Displacement node". |
 | Normal map looks inverted in my engine | Switch **Normal Y** between OpenGL and DirectX (Advanced ▸ Output). |
-| AO looks flat with *Cycles Bake* | A flat plane has no occluders – use *Object's UVs* on real geometry, or keep *From Height*. |
+| AO looks flat with *Cycles Bake* | A flat plane has no occluders – use *Whole Object* on real geometry, or keep *From Height*. |
 | Need details for a bug report | Enable **Verbose Console Output** in the add-on preferences and open the system console. |
 
 ## Development
