@@ -8,6 +8,7 @@
 ![Blender 3.0+](https://img.shields.io/badge/Blender-3.0%2B-orange)
 [![License: GPL v3+](https://img.shields.io/badge/License-GPLv3%2B-blue.svg)](LICENSE)
 
+[![Download Latest Release](https://img.shields.io/badge/Download-Latest%20Release-2ea44f?style=for-the-badge&logo=blender&logoColor=white)](https://extensions.blender.org/add-ons/mat-baker/)
 [![Download latest release](https://img.shields.io/badge/Download-Latest%20Release-2ea44f?style=for-the-badge&logo=github&logoColor=white)](../../releases/latest)
 
 
