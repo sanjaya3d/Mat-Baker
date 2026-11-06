@@ -9,8 +9,6 @@
 [![License: GPL v3+](https://img.shields.io/badge/License-GPLv3%2B-blue.svg)](LICENSE)
 
 [![Download on Blender Extensions](https://img.shields.io/badge/Download-Latest%20Release-F5792A?style=for-the-badge&logo=blender&logoColor=white)](https://extensions.blender.org/add-ons/mat-baker/)
-[![Download latest release](https://img.shields.io/badge/Download-Latest%20Release-2ea44f?style=for-the-badge&logo=github&logoColor=white)](../../releases/latest)
-
 
 **Bake procedural materials into PBR texture packs.**
 One click turns a node-based material into Base Color, Normal, Roughness, Metallic, Height, AO, Emission, Opacity and Curvature maps, with presets for Unreal, Unity, glTF and Godot.
