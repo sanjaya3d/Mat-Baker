@@ -10,6 +10,7 @@
 
 [![Download on Blender Extensions](https://img.shields.io/badge/Download-Latest%20Release-F5792A?style=for-the-badge&logo=blender&logoColor=white)](https://extensions.blender.org/add-ons/mat-baker/)
 
+
 **Bake procedural materials into PBR texture packs.**
 One click turns a node-based material into Base Color, Normal, Roughness, Metallic, Height, AO, Emission, Opacity and Curvature maps, with presets for Unreal, Unity, glTF and Godot.
 
@@ -35,6 +36,7 @@ Blender add-on / extension by **SANJAYA3D** · GPL-3.0-or-later · requires Blen
 - **PNG, TIFF or OpenEXR**, 8 / 16 / 32-bit, standard or Unreal-style file names, optional JSON manifest.
 - **Stays responsive between maps** – progress bar in the panel, **Esc** cancels (after the current map finishes).
 - **Models with many materials** – bake all materials of an object into **one** texture set through its UV map.
+- **UDIM** – one file per UV tile (`Name_BaseColor.1001.png`, …) for models that use UDIM tiles.
 - **Batch export** – the active object, all selected objects, or everything in the file.
 - **Preview Material** – builds a ready-to-assign Blender material from the exported files so you can check the result.
 - **Your scene stays clean** – works on a copy of the material; all temporary data is removed and all settings are restored, even when you cancel.
@@ -45,7 +47,7 @@ Blender add-on / extension by **SANJAYA3D** · GPL-3.0-or-later · requires Blen
 `Edit ▸ Preferences ▸ Get Extensions` → search for **Mat-Baker** → **Install**.
 
 **From a GitHub release:**
-1. Download `mat_baker-1.0.0.zip` from the [Releases](https://github.com/SANJAYA3D/Mat-Baker/releases) page. **Do not unzip it.**
+1. Download `mat_baker-1.2.0.zip` from the [Releases](https://github.com/SANJAYA3D/Mat-Baker/releases) page. **Do not unzip it.**
 2. In Blender: `Edit ▸ Preferences ▸ Get Extensions`, open the **▾** menu (top right) → **Install from Disk…** and pick the zip.
 
 The panel appears in the 3D Viewport sidebar (press `N`) on the **Mat-Baker** tab, and in `Properties ▸ Material`.
@@ -83,6 +85,24 @@ How it works: every face is baked through **its own material** into the same ima
 Use the result with the same UV map: assign the texture set (or **Preview Material**) to the model with that UV map active.
 
 Good to know: the overlap check is an estimate – it flags UV coverage above 100 % and UVs outside the square, but it cannot see overlaps in a layout that covers less than the whole square. **Export** can run for one object, all selected objects (one set each) or every mesh object in the file.
+
+## UDIM tiles
+
+If your model uses **UDIM** (UV islands spread over tiles 1001, 1002, 1011 … outside the 0–1 square), Mat-Baker can write one file per tile:
+
+1. Choose **Bake target ▸ Whole Object** and tick **UDIM Tiles**.
+2. Pick the UV map that holds the UDIM layout. The panel shows which tiles it uses, for example `UDIM: 3 tile(s): 1001, 1002, 1011`, and warns about problems.
+3. Click **Export Texture Pack**. Each tile is baked at the chosen resolution and saved as `Prop_BaseColor.1001.png`, `Prop_BaseColor.1002.png`, … (the same for Normal, Roughness, packed textures and so on).
+
+Tile numbers follow the usual rule: **1001 + U + 10 × V**. The manifest lists the tiles and uses the `<UDIM>` token (`Prop_BaseColor.<UDIM>.png`), which Blender, Substance, Unreal and most other tools understand.
+
+Things to know:
+- **AO is baked by Cycles** (needs real geometry, which a model has). **Curvature and Normalize Height are not available** with UDIM: they are computed from one image's height map and would differ from tile to tile.
+- Each tile is a full image, so export time grows with the number of tiles. Up to 100 tiles are supported.
+- Faces must lie inside one tile. The panel warns about faces that cross a tile border, UVs outside the UDIM range (U 0–10, V above 0) and overlaps inside a tile.
+- While baking, Mat-Baker temporarily adds **one UV map** to the object (the model must have a free slot: Blender allows 8). It is removed afterwards and your own UV maps are never changed.
+- *Keep Images in Blender* is ignored for UDIM exports (the tiles are saved to disk and the images are freed).
+- **Preview Material** builds UDIM images from the first tile's file and registers the other tiles. If your Blender version cannot do that automatically, add the missing tiles in the Image Editor (*Tiles* panel).
 
 ## Presets
 
@@ -133,7 +153,7 @@ While exporting, Mat-Baker:
 - makes a **copy of your material** (in *Whole Object* mode: a copy of each material of the object) and bakes the copies – the originals are never modified,
 - adds a temporary **plane object, mesh, images and a scene** (names start with `_MATBAKER_`) and removes them again,
 - switches the render engine to **Cycles** and adjusts the bake settings, then **restores them**,
-- in *Whole Object* mode, temporarily assigns those copies to the object's material slots and makes the chosen UV map active, then **puts both back**,
+- in *Whole Object* mode, temporarily assigns those copies to the object's material slots and makes the chosen UV map active, then **puts both back**; with *UDIM* it also adds one temporary UV map and removes it again,
 - restores your selection and active object afterwards.
 
 It writes files **only** into the output folder you choose. **Preview Material** (on request) adds a material named `<Name>_PBR` that uses the exported files. It never touches the network, collects nothing and sends nothing.
@@ -146,6 +166,8 @@ The only permission it requests is *files* ("Save baked texture files to a folde
 | "Save the .blend file first…" | The output folder starts with `//`. Save the .blend, or enter an absolute folder. |
 | "The Cycles add-on is disabled" | Enable Cycles in `Preferences ▸ Add-ons`; baking needs it. |
 | "…has no UV map" | Only in *Whole Object* mode – unwrap the object or use *Flat Plane*. |
+| "…8 UV maps" (UDIM) | UDIM baking needs one free UV map slot for a moment. Remove a UV map you don't need and try again. |
+| "UDIM: …" warning | Check the line under the tile list: UVs outside the UDIM range, faces crossing a tile border, or overlapping UVs inside a tile. |
 | "UVs overlap" / "UVs leave the 0-1 square" | *Whole Object* mode needs one non-overlapping layout inside the UV square. Unwrap into a new UV map (e.g. *Smart UV Project*) and select it under **UV Map**. |
 | A map shows ✖ | Read the short hint under the checklist, e.g. "Normal: add a Bump/Displacement node". |
 | Normal map looks inverted in my engine | Switch **Normal Y** between OpenGL and DirectX (Advanced ▸ Output). |
@@ -162,7 +184,7 @@ python tests/test_mat_baker.py
 python scripts/build_extension.py
 
 # validate the package with Blender before uploading
-blender --command extension validate dist/mat_baker-1.0.0.zip
+blender --command extension validate dist/mat_baker-1.1.0.zip
 ```
 
 The tests drive the whole export flow against a simulated Blender API that enforces Blender's baking rules, and statically check the Blender Extensions rules (no network code, valid manifest, GPL header, …). They do **not** replace trying the add-on in real Blender.
