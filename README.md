@@ -5,11 +5,23 @@
   </picture>
 </p>
 
-![Blender 3.0+](https://img.shields.io/badge/Blender-3.0%2B-orange)
-[![License: GPL v3+](https://img.shields.io/badge/License-GPLv3%2B-blue.svg)](LICENSE)
+<p align="center">
+  <img src="https://img.shields.io/badge/Blender-3.0%2B-orange" alt="Blender 3.0+">
 
-[![Download on Blender Extensions](https://img.shields.io/badge/Download-Latest%20Release-F5792A?style=for-the-badge&logo=blender&logoColor=white)](https://extensions.blender.org/add-ons/mat-baker/)
-
+  <a href="LICENSE">
+    <img src="https://img.shields.io/badge/License-GPLv3%2B-blue.svg" alt="License: GPL v3+">
+  </a>
+  <br><br>
+  <a href="https://extensions.blender.org/add-ons/mat-baker/">
+    <img src="https://img.shields.io/badge/Download-Latest%20Release-F5792A?style=for-the-badge&logo=blender&logoColor=white" alt="Download on Blender Extensions">
+  </a>
+  <br><br>
+  <a href="https://extensions.blender.org/add-ons/mat-baker/">
+  <img src="https://raw.githubusercontent.com/sanjaya3d/Mat-Baker/main/branding/mat-baker-500-downloads.png"
+       alt="Mat Baker 500 Downloads"
+       width="500">
+</a>
+</p>
 
 **Bake procedural materials into PBR texture packs.**
 One click turns a node-based material into Base Color, Normal, Roughness, Metallic, Height, AO, Emission, Opacity and Curvature maps, with presets for Unreal, Unity, glTF and Godot.
