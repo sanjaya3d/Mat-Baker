@@ -17,7 +17,7 @@
   </a>
   <br><br>
   <a href="https://extensions.blender.org/add-ons/mat-baker/">
-  <img src="https://raw.githubusercontent.com/sanjaya3d/Mat-Baker/main/branding/mat-baker-500-downloads.png"
+  <img src="https://raw.githubusercontent.com/sanjaya3d/Mat-Baker/main/branding/mat-baker-1000-downloads.png"
        alt="Mat Baker 500 Downloads"
        width="300">
 </a>
