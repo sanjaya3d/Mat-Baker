@@ -222,6 +222,9 @@ Unreal Engine, Unity, glTF and Godot are trademarks or names of their respective
 
 ## Author
 
+
+[![Support Mat-Baker](https://img.shields.io/badge/SUPPORT-MAT--BAKER-FF424D?style=for-the-badge&logo=patreon&logoColor=white)](https://www.patreon.com/cw/sanjaya3d)
+
 **SANJAYA3D** – [facebook.com/sanjaya3d](https://www.facebook.com/sanjaya3d)
 
 Bug reports and feature requests: [GitHub Issues](https://github.com/SANJAYA3D/Mat-Baker/issues).
