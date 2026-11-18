@@ -227,15 +227,8 @@ Unreal Engine, Unity, glTF and Godot are trademarks or names of their respective
 
 Mat-Baker is free, and I want to keep it that way!
 
-If you find this add-on useful and would like to support its continued development, consider leaving a tip on Patreon.
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/F7W62AV7HB)
 
-Your support helps me maintain Mat-Baker, fix bugs, and develop new features.
-
-<p align="center">
-  <a href="https://www.patreon.com/cw/sanjaya3d">
-    <img src="https://img.shields.io/badge/Support%20Mat--Baker%20on%20Patreon-FF424D?style=for-the-badge&logo=patreon&logoColor=white" alt="Support Mat-Baker on Patreon">
-  </a>
-</p>
 
 Thank you for supporting independent development! ❤️
 
