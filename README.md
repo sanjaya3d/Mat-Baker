@@ -236,7 +236,7 @@ Thank you for supporting independent development! ❤️
 ## Author
 
 
-[![Support Mat-Baker](https://img.shields.io/badge/SUPPORT-MAT--BAKER-FF424D?style=for-the-badge&logo=patreon&logoColor=white)](https://www.patreon.com/cw/sanjaya3d)
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/F7W62AV7HB)
 
 **SANJAYA3D** – [facebook.com/sanjaya3d](https://www.facebook.com/sanjaya3d)
 
